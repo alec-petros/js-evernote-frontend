@@ -1,0 +1,16 @@
+#note-list {
+  width: 20%;
+  display: grid;
+  float: left;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px;
+  padding-left: 6px;
+}
+
+#note-container {
+  width: 75%;
+  float: right;
+  display: flex;
+  align-items: center;
+}
