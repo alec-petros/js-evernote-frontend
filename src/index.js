@@ -7,22 +7,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("create-note").addEventListener('click', e => {
     noteContainer.innerHTML = renderForm()
-    const noteForm = document.getElementById('create-note-form')
-    noteForm.addEventListener('submit', e => {
-      e.preventDefault()
-      let title = document.getElementById('new-note-title').value
-      let body = document.getElementById('new-note-content').value
-      fetch(url+'/notes', {
-        method: "POST",
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({title: title, body: body})
-      }).then(r => r.json()).then(json => {
-        noteContainer.innerHTML = renderNote(json);
-        renderList();
-      })
-    })
+    // const noteForm = document.getElementById('create-note-form')
+    // noteForm.addEventListener('submit', e => {
+    //   console.log("pressed")
+    //   e.preventDefault()
+    //   // let title = document.getElementById('new-note-title').value
+    //   // let body = document.getElementById('new-note-content').value
+    //   fetch(url+'/notes', {
+    //     method: "POST",
+    //     headers: {'Content-Type':'application/json'},
+    //     body: JSON.stringify({title: title, body: body})
+    //   }).then(r => r.json()).then(json => {
+    //     noteContainer.innerHTML = renderNote(json);
+    //     renderList();
+    //   })
+    // })
 
   })
+
+
   function renderList() {
     fetch(url+'users/1').then(r => r.json()).then(r => {
       noteList.innerHTML = r.notes.map(note => renderListOption(note)).join('')
@@ -41,12 +44,12 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         break;
       case 'submit-edit':
-        let title = document.getElementById('edit-note-title').value
-        let body = document.getElementById('edit-note-content').value
+        let editTitle = document.getElementById('edit-note-title').value
+        let editBody = document.getElementById('edit-note-content').value
         fetch(url+`/notes/${activeNote}`, {
           method: "PATCH",
           headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({title: title, body: body})
+          body: JSON.stringify({title: editTitle, body: editBody})
         }).then(r => r.json()).then(json => {
           noteContainer.innerHTML = renderNote(json);
           renderList();
@@ -56,8 +59,22 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch(url+`/notes/${activeNote}`, {
           method: "DELETE"
         }).then(r => r.json()).then(e => {
-          renderList(); 
+          renderList();
           noteContainer.innerHTML = ""
+        })
+        break;
+      case 'create-note':
+        let newTitle = document.getElementById('new-note-title').value
+        let newBody = document.getElementById('new-note-content').value
+        fetch(url+'/notes', {
+          method: "POST",
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({title: newTitle, body: newBody})
+        }).then(r => r.json()).then(json => {
+          activeNote = json.id
+          noteContainer.innerHTML = renderNote(json);
+          renderList();
+          console.log(json)
         })
         break;
       default:
@@ -84,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <input required type="text" id="new-note-title" name="new-note-title" placeholder="title"><br>
       <label for="new-note-content">Content:</label><br>
       <textarea id="new-note-content" rows="30" cols="50"></textarea><br>
-      <input type="submit" value="Create New Note">
+      <button type="button" id="create-note">Create Note</button>
     </form>`
   }
 
