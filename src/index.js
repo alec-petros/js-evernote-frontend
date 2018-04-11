@@ -7,22 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("create-note").addEventListener('click', e => {
     noteContainer.innerHTML = renderForm()
-    // const noteForm = document.getElementById('create-note-form')
-    // noteForm.addEventListener('submit', e => {
-    //   console.log("pressed")
-    //   e.preventDefault()
-    //   // let title = document.getElementById('new-note-title').value
-    //   // let body = document.getElementById('new-note-content').value
-    //   fetch(url+'/notes', {
-    //     method: "POST",
-    //     headers: {'Content-Type':'application/json'},
-    //     body: JSON.stringify({title: title, body: body})
-    //   }).then(r => r.json()).then(json => {
-    //     noteContainer.innerHTML = renderNote(json);
-    //     renderList();
-    //   })
-    // })
-
   })
 
 
